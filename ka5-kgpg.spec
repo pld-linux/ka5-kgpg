@@ -1,20 +1,21 @@
-%define		kdeappsver	18.04.0
-%define		qtver		5.3.2
+%define		kdeappsver	23.04.0
+%define		qtver		5.15.2
 %define		kaname		kgpg
 
 Summary:	K Desktop Environment - interface for GnuPG
 Summary(pl.UTF-8):	K Desktop Environment -  interfejs do GnuPG
 Name:		ka5-%{kaname}
-Version:	18.04.0
+Version:	23.04.0
 Release:	1
 License:	GPL
 Group:		X11/Applications/Editors
-Source0:	http://download.kde.org/stable/applications/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
-# Source0-md5:	7f55deb21564526df15225c6273f2853
-URL:		http://www.kde.org/
+Source0:	https://download.kde.org/stable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
+# Source0-md5:	fdb63e061db0800ed8491b650a89272c
+URL:		https://www.kde.org/
 BuildRequires:	gpgme-devel
 BuildRequires:	ka5-akonadi-contacts-devel
 BuildRequires:	ka5-akonadi-devel
+BuildRequires:	ninja
 BuildRequires:	shared-mime-info
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -32,8 +33,9 @@ kgpg is a simple, free, open source KDE frontend for gpg. It features
 - drag & drop encryption + clipboard en/decryption
 
 %description -l pl.UTF-8
-kgpg jest prostą, darmową, z otwartymi źródłami, graficzną nakładką na
-gpg przeznaczoną dla KDE. Ma następujące możliwości:
+kgpg jest prostą, darmową, z otwartymi źródłami, graficzną
+nakładką na gpg przeznaczoną dla KDE. Ma następujące
+możliwości:
 - tryb edytora umożliwiający napisanie/wklejenie tekstu oraz
   zaszyfrowanie/odszyfrowanie/podpisanie/sprawdzenie go,
 - zarządzanie kluczami: import, eksport, usuwanie, podpisywanie,
@@ -41,8 +43,9 @@ gpg przeznaczoną dla KDE. Ma następujące możliwości:
 - integrację z Konquerorem: kliknięcie lewym przyciskiem na pliku w
   celu odszyfrowania/sprawdzenia go, kliknięcie prawym przyciskiem na
   pliku w celu zaszyfrowania/podpisania go,
-- szyfrowanie: obsługa szyfrów symetrycznych; wiele kluczy i domyślne
-  szyfrowanie kluczem; opcjonalnie niszczenie plików źródłowych,
+- szyfrowanie: obsługa szyfrów symetrycznych; wiele kluczy i
+  domyślne szyfrowanie kluczem; opcjonalnie niszczenie plików
+  źródłowych,
 - sygnatury: tworzenie i sprawdzanie oddzielonych i czysto tekstowych
   sygnatur,
 - szyfrowanie metodą przeciągnij-i-upuść oraz szyfrowanie i
@@ -54,23 +57,23 @@ gpg przeznaczoną dla KDE. Ma następujące możliwości:
 %build
 install -d build
 cd build
-%cmake \
+%cmake -G Ninja \
+	%{!?with_tests:-DBUILD_TESTING=OFF} \
+	-DHTML_INSTALL_DIR=%{_kdedocdir} \
 	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
 	..
-%{__make}
+%ninja_build
+
+%{?with_tests:%ninja_build test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} -C build install \
-	DESTDIR=$RPM_BUILD_ROOT
+%ninja_install -C build
 
 %find_lang %{kaname} --all-name --with-kde
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
 
 %files -f %{kaname}.lang
 %defattr(644,root,root,755)
@@ -83,9 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/scalable/*/*.svg
 %{_iconsdir}/hicolor/scalable/*/*.svgz
 %{_datadir}/kgpg
-%{_datadir}/kservices5/ServiceMenus/encryptfile.desktop
-%{_datadir}/kservices5/ServiceMenus/encryptfolder.desktop
-%{_datadir}/kservices5/ServiceMenus/viewdecrypted.desktop
 %{_datadir}/kxmlgui5/kgpg
 %{_datadir}/metainfo/org.kde.kgpg.appdata.xml
-
+%{_datadir}/kio/servicemenus/kgpg_encryptfile.desktop
+%{_datadir}/kio/servicemenus/kgpg_encryptfolder.desktop
+%{_datadir}/kio/servicemenus/kgpg_viewdecrypted.desktop
+%{_datadir}/qlogging-categories5/kgpg.categories
