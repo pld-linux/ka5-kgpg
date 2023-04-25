@@ -6,7 +6,7 @@ Summary:	K Desktop Environment - interface for GnuPG
 Summary(pl.UTF-8):	K Desktop Environment -  interfejs do GnuPG
 Name:		ka5-%{kaname}
 Version:	23.04.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Editors
 Source0:	https://download.kde.org/stable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
@@ -69,6 +69,9 @@ cd build
 %install
 rm -rf $RPM_BUILD_ROOT
 %ninja_install -C build
+
+# not supported by glibc yet
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/ie
 
 %find_lang %{kaname} --all-name --with-kde
 
