@@ -1,16 +1,16 @@
-%define		kdeappsver	23.08.3
+%define		kdeappsver	23.08.4
 %define		qtver		5.15.2
 %define		kaname		kgpg
 
 Summary:	K Desktop Environment - interface for GnuPG
 Summary(pl.UTF-8):	K Desktop Environment -  interfejs do GnuPG
 Name:		ka5-%{kaname}
-Version:	23.08.3
+Version:	23.08.4
 Release:	1
 License:	GPL
 Group:		X11/Applications/Editors
 Source0:	https://download.kde.org/stable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
-# Source0-md5:	57e99862e3ed5ae17228734bf762c4d1
+# Source0-md5:	cae880e403ff58aeb0262b86f4b34671
 URL:		https://www.kde.org/
 BuildRequires:	gpgme-devel
 BuildRequires:	ka5-akonadi-contacts-devel
