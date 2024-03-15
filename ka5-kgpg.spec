@@ -1,16 +1,16 @@
-%define		kdeappsver	24.01.95
+%define		kdeappsver	23.08.4
 %define		qtver		5.15.2
 %define		kaname		kgpg
 
 Summary:	K Desktop Environment - interface for GnuPG
 Summary(pl.UTF-8):	K Desktop Environment -  interfejs do GnuPG
 Name:		ka5-%{kaname}
-Version:	24.01.95
-Release:	0.1
+Version:	23.08.4
+Release:	1
 License:	GPL
 Group:		X11/Applications/Editors
-Source0:	https://download.kde.org/unstable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
-# Source0-md5:	6f2b8c56369cfa54df5f8211e38dd22b
+Source0:	https://download.kde.org/stable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
+# Source0-md5:	cae880e403ff58aeb0262b86f4b34671
 URL:		https://www.kde.org/
 BuildRequires:	gpgme-devel
 BuildRequires:	ka5-akonadi-contacts-devel
@@ -59,8 +59,7 @@ możliwości:
 	-G Ninja \
 	%{!?with_tests:-DBUILD_TESTING=OFF} \
 	-DHTML_INSTALL_DIR=%{_kdedocdir} \
-	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-	-DQT_MAJOR_VERSION=6
+	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON
 %ninja_build -C build
 
 %{?with_tests:%ninja_build test}
@@ -87,8 +86,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/*/*/*.png
 %{_iconsdir}/hicolor/scalable/*/*.svg
 %{_iconsdir}/hicolor/scalable/*/*.svgz
+%{_datadir}/kgpg
+%{_datadir}/kxmlgui5/kgpg
 %{_datadir}/metainfo/org.kde.kgpg.appdata.xml
 %{_datadir}/kio/servicemenus/kgpg_encryptfile.desktop
 %{_datadir}/kio/servicemenus/kgpg_encryptfolder.desktop
 %{_datadir}/kio/servicemenus/kgpg_viewdecrypted.desktop
-%{_datadir}/qlogging-categories6/kgpg.categories
+%{_datadir}/qlogging-categories5/kgpg.categories
